@@ -1,15 +1,6 @@
 #include "lib.h"
 #include <ctime>
 
-namespace traj {
-
-arma::vec x;
-arma::vec p;
-arma::cx_vec psi;
-int surface;
-
-} // namespace traj
-
 /***********************************************/
 namespace sys {
 
@@ -20,13 +11,13 @@ arma::vec Fsurf;
 arma::vec eigs;
 
 /* * * * * * * * * * * * * * * * * * * * * * * */
-void HamilD() {
+void HamilD(traj &curr_traj) {
 
   // Hamiltonian with flat adiabats
-  double theta = two_pi * (jlx * std::erf(jbx * traj::x(0)) + 1.0) / 4.0;
+  double theta = two_pi * (jlx * std::erf(jbx * curr_traj.x(0)) + 1.0) / 4.0;
   double dthetadx0 =
-      two_pi * jlx * jbx * std::exp(std::pow(jbx * traj::x(0), 2)) / 4.0;
-  double phi = 0.3 * jlx * traj::x(1);
+      two_pi * jlx * jbx * std::exp(std::pow(jbx * curr_traj.x(0), 2)) / 4.0;
+  double phi = 0.3 * jlx * curr_traj.x(1);
   double dphidx1 = 0.3 * jlx;
 
   Ve.zeros(qdim, qdim);
@@ -50,10 +41,10 @@ void HamilD() {
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * */
-void HamilA() {
+void HamilA(traj &curr_traj) {
 
   // update Ve
-  HamilD();
+  HamilD(curr_traj);
 
   double V12_sq = real(Ve(0, 1) * Ve(1, 0));
   // double Tra = 0;
@@ -80,63 +71,67 @@ void HamilA() {
 
 } // namespace sys
 
-/***********************************************/
-namespace traj {
+class traj {
 
-/* * * * * * * * * * * * * * * * * * * * * * * */
-void initial() {
+  /* * * * * * * * * * * * * * * * * * * * * * * */
+  void initial() {
 
-  std::cout << "Sigma_p is set to zero\n\n" << std::endl;
-  sigp.zeros(cdim);
+    std::cout << "Sigma_p is set to zero\n\n" << std::endl;
+    sigp.zeros(cdim);
 
-  x.zeros(cdim);
-  p.zeros(cdim);
-  psi.zeros(qdim);
+    x.zeros(cdim);
+    p.zeros(cdim);
+    psi.zeros(qdim);
 
-  arma::vec randvec;
-  randvec.zeros(cdim + cdim % 2);
+    arma::vec randvec;
+    randvec.zeros(cdim + cdim % 2);
 
-  // initial x sampled from gaussian
-  boxmuller(randvec);
-  x = sigx % randvec.head(cdim) + x0;
-  // initial p sampled from gaussian
-  boxmuller(randvec);
-  p = sigp % randvec.head(cdim) + p0;
+    // initial x sampled from gaussian
+    boxmuller(randvec);
+    x = sigx % randvec.head(cdim) + x0;
+    // initial p sampled from gaussian
+    boxmuller(randvec);
+    p = sigp % randvec.head(cdim) + p0;
 
-  // initial psi in adiabatic basis
-  psi(0) = arma::cx_double(1 / sqrt(2), 0);
-  psi(1) =
-      sqrt(1.0 - (psi(0) * psi(0))) * arma::cx_double(cos(phase), sin(phase));
-  // std::cout << "psi:\n" << psi << std::endl;
-  // std::cout << "x:\n" << x << std::endl;
-  // std::cout << "p:\n" << p << std::endl;
-  double whichsurf = rand() * (1.0 / RAND_MAX);
-  if (whichsurf < (psi(0) * conj(psi(0))).real())
-    surface = 0;
-  else
-    surface = 1;
+    // initial psi in adiabatic basis
+    psi(0) = arma::cx_double(1 / sqrt(2), 0);
+    psi(1) =
+        sqrt(1.0 - (psi(0) * psi(0))) * arma::cx_double(cos(phase), sin(phase));
+    // std::cout << "psi:\n" << psi << std::endl;
+    // std::cout << "x:\n" << x << std::endl;
+    // std::cout << "p:\n" << p << std::endl;
+    double whichsurf = rand() * (1.0 / RAND_MAX);
+    if (whichsurf < (psi(0) * conj(psi(0))).real())
+      surface = 0;
+    else
+      surface = 1;
 
-  std::cout << "run" << std::endl;
-  return;
-}
+    std::cout << "run" << std::endl;
+    return;
+  }
 
-/* * * * * * * * * * * * * * * * * * * * * * * */
-void propagate() {
-  // x + p/m*dt/2
-  x = x + p * dt2;
+  /* * * * * * * * * * * * * * * * * * * * * * * */
+  void propagate() {
+    // x + p/m*dt/2
+    x = x + p * dt2;
 
-  // update Hamil to get Fsurf
-  sys::HamilA();
-  // p + F*dt
-  p = p + (sys::Fsurf)*dt;
+    // update Hamil to get Fsurf
+    sys::HamilA();
+    // p + F*dt
+    p = p + (sys::Fsurf)*dt;
 
-  // x + p/m*dt/2
-  x = x + p * dt2;
+    // x + p/m*dt/2
+    x = x + p * dt2;
 
-  return;
-}
+    return;
+  }
 
-} // namespace traj
+  arma::vec x;
+  arma::vec p;
+  arma::cx_vec psi;
+  int surface;
+
+}; // namespace traj
 
 /***********************************************/
 int main() {
@@ -146,10 +141,11 @@ int main() {
   read_input();
 
   for (int itraj = 0; itraj < ::ntrajs; itraj++) {
-    traj::initial();
+    traj curr_traj;
+    curr_traj.initial();
 
     for (int istep = 0; istep < nsteps; istep++) {
-      traj::propagate();
+      curr_traj.propagate();
     }
     std::cout << "traj: " << itraj << std::endl;
   }
