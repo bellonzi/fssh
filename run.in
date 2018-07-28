@@ -1,0 +1,16 @@
+!calculation
+10	!ntrajs
+2	!nsteps
+0.25	!dt
+!Hamil
+2	!qdim
+2	!cdim
+0.1	!A from Joe's code
+1.0	!lx
+3.0	!bx
+!initial
+4	!phase = 2pi/x
+1.0	1.0	!sigx
+0000	-2.5	!x0
+0.0	30	!p0
+550	!seed random number gen
