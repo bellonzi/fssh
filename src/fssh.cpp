@@ -1,4 +1,5 @@
-#include "fssh.h"
+#include "lib.h"
+#include <ctime>
 
 namespace traj {
 
@@ -101,7 +102,7 @@ namespace traj {
 
     //initial psi in adiabatic basis
     psi(0) = arma::cx_double(1/sqrt(2),0);
-    psi(1) = sqrt(1-(psi(0)*psi(0)))*arma::cx_double(cos(phase),sin(phase));
+    psi(1) = sqrt(1.0-(psi(0)*psi(0)))*arma::cx_double(cos(phase),sin(phase));
     //std::cout << "psi:\n" << psi << std::endl;
     //std::cout << "x:\n" << x << std::endl;
     //std::cout << "p:\n" << p << std::endl;
