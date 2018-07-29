@@ -6,7 +6,6 @@
 class traj {
 
   void initial();
-  void propagate();
 
   arma::vec x;
   arma::vec p;
