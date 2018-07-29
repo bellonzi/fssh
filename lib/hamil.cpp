@@ -1,5 +1,3 @@
-#include <cmath>
-
 #include "hamil.h"
 
 /* * * * * * * * * * * * * * * * * * * * * * * */
@@ -56,7 +54,7 @@ void hamil::HamilA(traj &curr_traj) {
   Ue(0, 1) = (eigs(1) - Ve(1, 1)) / wave_norm;
   Ue(1, 1) = Ve(1, 0) / wave_norm;
 
-  Fsurf.zeros(cdim);
+  curr_traj.F.zeros(cdim);
 
   return;
 }
