@@ -29,7 +29,7 @@ int main() {
   const clock_t begin_time = std::clock();
 
   params config;
-  config.read_input();
+  config.read_input("run.in");
   hamil curr_H;
   curr_H.set_params(config);
 

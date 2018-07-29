@@ -3,12 +3,12 @@
 
 #include <armadillo>
 #include <cmath>
+#include <string>
 
 const double two_pi = 2.0 * M_PI;
 
 struct params {
-  void read_input(void);                    // read run.in
-  void boxmuller(arma::vec &randvec) const; // make random normal noise
+  void read_input(const std::string &); // read run.in
 
   // global variables that are set in lib.C
   int ntrajs;

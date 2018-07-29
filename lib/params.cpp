@@ -1,9 +1,6 @@
 #include <cstdlib>
 #include <fstream>
 #include <iostream>
-#include <limits>
-#include <random>
-#include <string>
 
 #include "params.h"
 
@@ -17,11 +14,11 @@
 // double jA, jlx, jbx;
 
 /* * * * * * * * * * * * * * * * * * * * * * * */
-void params::read_input(void) {
+void params::read_input(const std::string &input_file) {
 
   size_t pos;
   std::string delim1 = "\t";
-  std::ifstream input("run.in");
+  std::ifstream input(input_file);
   std::string line;
 
   getline(input, line); //! calculation
