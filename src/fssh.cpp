@@ -1,19 +1,21 @@
+#include "hamil.h"
 #include "lib.h"
+#include "traj.h"
 #include <ctime>
 
 namespace fssh {
 /* * * * * * * * * * * * * * * * * * * * * * * */
-void traj::propagate() {
+void propagate(traj &curr_traj) {
   // x + p/m*dt/2
-  x = x + p * dt2;
+  curr_traj.x = curr_traj.x + curr_traj.p * dt2;
 
   // update Hamil to get Fsurf
-  hamil::HamilA();
+  hamil::HamilA(curr_traj);
   // p + F*dt
-  p = p + (sys::Fsurf)*dt;
+  curr_traj.p = curr_traj.p + curr_traj.F * dt;
 
   // x + p/m*dt/2
-  x = x + p * dt2;
+  curr_traj.x = curr_traj.x + curr_traj.p * dt2;
 
   return;
 }
@@ -31,7 +33,7 @@ int main() {
     curr_traj.initial();
 
     for (int istep = 0; istep < nsteps; istep++) {
-      fssh::propagate();
+      fssh::propagate(curr_traj);
     }
     std::cout << "traj: " << itraj << std::endl;
   }
