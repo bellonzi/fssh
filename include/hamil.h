@@ -3,7 +3,9 @@
 
 #include <armadillo>
 
+#include "lib.h"
 #include "traj.h"
+#include <cmath>
 
 class hamil {
 
