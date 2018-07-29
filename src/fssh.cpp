@@ -1,24 +1,25 @@
 #include "hamil.h"
-#include "lib.h"
+#include "params.h"
 #include "traj.h"
 #include <ctime>
 
 namespace fssh {
-/* * * * * * * * * * * * * * * * * * * * * * * */
-void propagate(traj &curr_traj, hamil &curr_H) {
+
+void propagate(const params &config, traj &curr_traj, hamil &curr_H) {
   // x + p/m*dt/2
-  curr_traj.x = curr_traj.x + curr_traj.p * dt2;
+  curr_traj.x = curr_traj.x + curr_traj.p * config.dt2;
 
   // update Hamil to get Fsurf
-  curr_H.HamilA(curr_traj);
+  curr_H.HamilA(config, curr_traj);
   // p + F*dt
-  curr_traj.p = curr_traj.p + curr_traj.F * dt;
+  curr_traj.p = curr_traj.p + curr_traj.F * config.dt;
 
   // x + p/m*dt/2
-  curr_traj.x = curr_traj.x + curr_traj.p * dt2;
+  curr_traj.x = curr_traj.x + curr_traj.p * config.dt2;
 
   return;
 }
+
 } // namespace fssh
 
 /***********************************************/
@@ -26,16 +27,18 @@ int main() {
 
   const clock_t begin_time = std::clock();
 
-  read_input();
+  params config;
+  config.read_input();
   hamil curr_H;
+  curr_H.set_params(config);
 
-  for (int itraj = 0; itraj < ::ntrajs; itraj++) {
+  for (int itraj = 0; itraj < config.ntrajs; itraj++) {
     traj curr_traj;
-    curr_traj.initial();
-    curr_H.HamilA(curr_traj);
+    curr_traj.initial(config);
+    curr_H.HamilA(config, curr_traj);
 
-    for (int istep = 0; istep < nsteps; istep++) {
-      fssh::propagate(curr_traj, curr_H);
+    for (int istep = 0; istep < config.nsteps; istep++) {
+      fssh::propagate(config, curr_traj, curr_H);
     }
     std::cout << "traj: " << itraj << std::endl;
   }

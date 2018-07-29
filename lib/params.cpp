@@ -1,16 +1,23 @@
-#include "lib.h"
+#include <cstdlib>
+#include <fstream>
+#include <iostream>
+#include <limits>
+#include <random>
+#include <string>
 
-// set global variables
-int ntrajs, nsteps;
-double dt, dt2;
-int qdim, cdim;
-double phase;
-arma::vec sigx, sigp;
-arma::vec x0, p0;
-double jA, jlx, jbx;
+#include "params.h"
+
+// // set global variables
+// int ntrajs, nsteps;
+// double dt, dt2;
+// int qdim, cdim;
+// double phase;
+// arma::vec sigx, sigp;
+// arma::vec x0, p0;
+// double jA, jlx, jbx;
 
 /* * * * * * * * * * * * * * * * * * * * * * * */
-void read_input(void) {
+void params::read_input(void) {
 
   size_t pos;
   std::string delim1 = "\t";
@@ -94,7 +101,7 @@ void read_input(void) {
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * */
-void boxmuller(arma::vec &randvec) {
+void params::boxmuller(arma::vec &randvec) const {
   double epsilon = std::numeric_limits<double>::min();
   double u1, u2;
   int lrand = 1;

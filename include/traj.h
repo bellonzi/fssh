@@ -1,12 +1,11 @@
 #ifndef TRAJ_H
 #define TRAJ_H
 
-#include "lib.h"
+#include "params.h"
 #include <armadillo>
 
 struct traj {
-
-  void initial();
+  void initial(const params &);
 
   arma::vec x;
   arma::vec p;

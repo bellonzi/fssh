@@ -3,7 +3,7 @@
 
 #include <armadillo>
 
-#include "lib.h"
+#include "params.h"
 #include "traj.h"
 #include <cmath>
 
@@ -15,9 +15,12 @@ struct hamil {
   arma::vec Fsurf;
   arma::vec eigs;
 
-  void HamilD(traj &curr_traj);
+  void HamilD(const params &, traj &curr_traj);
 
-  void HamilA(traj &curr_traj);
+  void HamilA(const params &, traj &curr_traj);
+  void set_params(const params &);
+
+  double jA, jlx, jbx; // Defines Hamil in Joe's code
 };
 
 #endif // HAMIL_H
