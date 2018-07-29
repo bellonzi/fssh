@@ -1,0 +1,40 @@
+set(PICOJSON_PREFIX PICOJSON1.3.0)
+set(PICOJSON_URL https://github.com/kazuho/picojson/raw/v1.3.0/picojson.h)
+set(PICOJSON_URL_MD5 15570e01e100ed7479123225fa02eb8d)
+
+
+ExternalProject_Add(${PICOJSON_PREFIX}
+    PREFIX ${PICOJSON_PREFIX}
+    URL ${PICOJSON_URL}
+    URL_MD5 ${PICOJSON_URL_MD5}
+    CONFIGURE_COMMAND ""
+    BUILD_COMMAND ""
+    BUILD_IN_SOURCE 0
+    INSTALL_COMMAND ""
+    LOG_DOWNLOAD 0
+    LOG_BUILD 0
+)
+
+ExternalProject_Get_Property(${PICOJSON_PREFIX} SOURCE_DIR)
+message(STATUS "Source directory of ${PICOJSON_PREFIX} ${SOURCE_DIR}")
+ExternalProject_Add_Step(${PICOJSON_PREFIX} ${PICOJSON_PREFIX}_info
+    COMMAND ${PICOJSON_MAKE} info PICOJSON_build_prefix=${PICOJSON_PREFIX}
+    DEPENDEES build
+    WORKING_DIRECTORY ${SOURCE_DIR}
+    LOG 1
+)
+
+# set the include directory variable and include it
+set(PICOJSON_INCLUDE_DIRS ${SOURCE_DIR}/include)
+include_directories(${PICOJSON_INCLUDE_DIRS})
+
+
+# verify that the PICOJSON header files can be included
+set(CMAKE_REQUIRED_INCLUDES_SAVE ${CMAKE_REQUIRED_INCLUDES})
+set(CMAKE_REQUIRED_INCLUDES ${CMAKE_REQUIRED_INCLUDES} ${PICOJSON_INCLUDE_DIRS})
+check_include_file_cxx("PICOJSON/PICOJSON.h" HAVE_PICOJSON)
+set(CMAKE_REQUIRED_INCLUDES ${CMAKE_REQUIRED_INCLUDES_SAVE})
+if (NOT HAVE_PICOJSON)
+    message(STATUS "Did not build PICOJSON correctly as cannot find PICOJSON.h")
+    set(HAVE_PICOJSON 1)
+endif (NOT HAVE_PICOJSON)
