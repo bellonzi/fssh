@@ -8,7 +8,7 @@ void traj::propagate() {
   x = x + p * dt2;
 
   // update Hamil to get Fsurf
-  sys::HamilA();
+  hamil::HamilA();
   // p + F*dt
   p = p + (sys::Fsurf)*dt;
 
