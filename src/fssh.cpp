@@ -33,11 +33,13 @@ int main() {
   hamil curr_H;
   curr_H.set_params(config);
 
+  std::mt19937 prng;
+  prng.seed(config.seed);
+
   for (int itraj = 0; itraj < config.ntrajs; itraj++) {
-    arma::arma_rng::set_seed(config.seed + itraj);
 
     traj curr_traj;
-    curr_traj.initial(config);
+    curr_traj.initial(config, prng);
     curr_H.HamilA(config, curr_traj);
 
     for (int istep = 0; istep < config.nsteps; istep++) {

@@ -1,6 +1,6 @@
 #include "traj.h"
 
-void traj::initial(const params &config) {
+void traj::initial(const params &config, std::mt19937 &prng) {
 
   // FIXME Nicole, I noticed that sigp is already 0, so I commented out the
   // lines below where sigp is set to zero again. Because we're passing params
@@ -19,10 +19,15 @@ void traj::initial(const params &config) {
 
   // initial x sampled from gaussian
   // The random seed is set in fssh.cpp
-  randvec.randn();
+  std::normal_distribution<> rand_gaussian{0, 1};
+  for (int i = 0; i < config.cdim; ++i) {
+    randvec(i) = rand_gaussian(prng);
+  }
   x = config.sigx % randvec.head(config.cdim) + config.x0;
   // initial p sampled from gaussian
-  randvec.randn();
+  for (int i = 0; i < config.cdim; ++i) {
+    randvec(i) = rand_gaussian(prng);
+  }
   p = config.sigp % randvec.head(config.cdim) + config.p0;
 
   // initial psi in adiabatic basis
@@ -32,8 +37,8 @@ void traj::initial(const params &config) {
   // std::cout << "psi:\n" << psi << std::endl;
   // std::cout << "x:\n" << x << std::endl;
   // std::cout << "p:\n" << p << std::endl;
-  double whichsurf = rand() * (1.0 / RAND_MAX);
-  if (whichsurf < (psi(0) * conj(psi(0))).real())
+  std::uniform_real_distribution<double> rand_01(0.0, 1.0);
+  if (rand_01(prng) < (psi(0) * conj(psi(0))).real())
     surface = 0;
   else
     surface = 1;

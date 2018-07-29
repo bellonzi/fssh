@@ -3,9 +3,10 @@
 
 #include "params.h"
 #include <armadillo>
+#include <random>
 
 struct traj {
-  void initial(const params &);
+  void initial(const params &, std::mt19937 &prng);
 
   arma::vec x;
   arma::vec p;

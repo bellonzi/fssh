@@ -25,9 +25,11 @@ TEST(hamil, set_params) {
 //   hamil curr_H;
 //   curr_H.set_params(config);
 //
+//   std::mt19937 prng;
+//   prng.seed(config.seed);
+//
 //   traj curr_traj;
-//   arma::arma_rng::set_seed(config.seed);
-//   curr_traj.initial(config);
+//   curr_traj.initial(config, prng);
 //
 //   curr_H.HamilA(config, curr_traj);
 //
@@ -51,9 +53,11 @@ TEST(hamil, HamilA) {
   hamil curr_H;
   curr_H.set_params(config);
 
+  std::mt19937 prng;
+  prng.seed(config.seed);
+
   traj curr_traj;
-  arma::arma_rng::set_seed(config.seed);
-  curr_traj.initial(config);
+  curr_traj.initial(config, prng);
 
   // Set curr_traj.F != 0 so that we can make sure that HamilA is zeroing F
   for (int i = 0; i < config.cdim; ++i) {

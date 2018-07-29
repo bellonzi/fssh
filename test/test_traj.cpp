@@ -6,13 +6,14 @@ TEST(traj, initial) {
   params config;
   config.read_input("../test/reference_config.txt");
 
-  arma::arma_rng::set_seed(config.seed);
+  std::mt19937 prng;
+  prng.seed(config.seed);
 
   traj curr_traj;
-  curr_traj.initial(config);
+  curr_traj.initial(config, prng);
 
-  EXPECT_NEAR(curr_traj.x(0), 0.52928799681641026, 1.0E-8);
-  EXPECT_NEAR(curr_traj.x(1), -4.0473080479951768, 1.0E-8);
+  EXPECT_NEAR(curr_traj.x(0), -0.29009427726390741, 1.0E-8);
+  EXPECT_NEAR(curr_traj.x(1), -1.1784441699122719, 1.0E-8);
 
   EXPECT_NEAR(curr_traj.p(0), 0.0, 1.0E-8);
   EXPECT_NEAR(curr_traj.p(1), 30.0, 1.0E-8);
@@ -25,5 +26,5 @@ TEST(traj, initial) {
   EXPECT_NEAR(curr_traj.psi(1).real(), 0.0, 1.0E-8);
   EXPECT_NEAR(curr_traj.psi(1).imag(), 0.70710678118654757, 1.0E-8);
 
-  EXPECT_EQ(curr_traj.surface, 1);
+  EXPECT_EQ(curr_traj.surface, 0);
 }
