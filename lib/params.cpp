@@ -1,20 +1,24 @@
-#include "lib.h"
+#include <cstdlib>
+#include <fstream>
+#include <iostream>
 
-// set global variables
-int ntrajs, nsteps;
-double dt, dt2;
-int qdim, cdim;
-double phase;
-arma::vec sigx, sigp;
-arma::vec x0, p0;
-double jA, jlx, jbx;
+#include "params.h"
+
+// // set global variables
+// int ntrajs, nsteps;
+// double dt, dt2;
+// int qdim, cdim;
+// double phase;
+// arma::vec sigx, sigp;
+// arma::vec x0, p0;
+// double jA, jlx, jbx;
 
 /* * * * * * * * * * * * * * * * * * * * * * * */
-void read_input(void) {
+void params::read_input(const std::string &input_file) {
 
   size_t pos;
   std::string delim1 = "\t";
-  std::ifstream input("run.in");
+  std::ifstream input(input_file);
   std::string line;
 
   getline(input, line); //! calculation
@@ -46,11 +50,11 @@ void read_input(void) {
   getline(input, line); // jlx
   pos = line.find(delim1);
   jlx = stod(line.substr(0, pos));
-  std::cout << jlx << std::endl;
+  // std::cout << jlx << std::endl;
   getline(input, line); // jbx
   pos = line.find(delim1);
   jbx = stod(line.substr(0, pos));
-  std::cout << jbx << std::endl;
+  // std::cout << jbx << std::endl;
 
   sigx.zeros(cdim);
   sigp.zeros(cdim);
@@ -84,30 +88,10 @@ void read_input(void) {
     line.erase(0, pos + delim1.length());
   }
 
-  // seed random number generator
+  // Get the seed for the random number generator
   getline(input, line); // cdim
   pos = line.find(delim1);
-  int seed = stoi(line.substr(0, pos));
-  std::srand(seed);
-
-  return;
-}
-
-/* * * * * * * * * * * * * * * * * * * * * * * */
-void boxmuller(arma::vec &randvec) {
-  double epsilon = std::numeric_limits<double>::min();
-  double u1, u2;
-  int lrand = 1;
-  do {
-    do {
-      u1 = rand() * (1.0 / RAND_MAX);
-      u2 = rand() * (1.0 / RAND_MAX);
-    } while (u1 <= epsilon);
-
-    randvec[lrand - 1] = sqrt(-2.0 * log(u1)) * cos(two_pi * u2);
-    randvec[lrand] = sqrt(-2.0 * log(u1)) * sin(two_pi * u2);
-    lrand += 2;
-  } while (lrand <= randvec.n_elem);
+  seed = stoi(line.substr(0, pos));
 
   return;
 }
