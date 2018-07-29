@@ -50,11 +50,11 @@ void params::read_input(const std::string &input_file) {
   getline(input, line); // jlx
   pos = line.find(delim1);
   jlx = stod(line.substr(0, pos));
-  std::cout << jlx << std::endl;
+  // std::cout << jlx << std::endl;
   getline(input, line); // jbx
   pos = line.find(delim1);
   jbx = stod(line.substr(0, pos));
-  std::cout << jbx << std::endl;
+  // std::cout << jbx << std::endl;
 
   sigx.zeros(cdim);
   sigp.zeros(cdim);

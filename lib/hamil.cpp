@@ -1,6 +1,5 @@
 #include "hamil.h"
 
-/* * * * * * * * * * * * * * * * * * * * * * * */
 void hamil::HamilD(const params &config, traj &curr_traj) {
 
   // Hamiltonian with flat adiabats
@@ -10,6 +9,12 @@ void hamil::HamilD(const params &config, traj &curr_traj) {
   double phi = 0.3 * jlx * curr_traj.x(1);
   double dphidx1 = 0.3 * jlx;
 
+  // FIXME Is the Hamiltonian is only defined for a qdim=2, cdim=2 system?
+  // If so, it shouldn't read qdim and cdim from config. Instead, I think it
+  // would be better to make qdim and cdim member data of Hamil1D, hard code
+  // them to 2 in set_params(), and also check if config.cdim == 2 and
+  // config.qdim == 2 (I know you do this in params.read_input(), but better to
+  // do it twice). If != 2, then do throw std::exception("config.cdim != 2")
   Ve.zeros(config.qdim, config.qdim);
   Ve(0, 0) = jA * std::cos(theta);
   Ve(1, 1) = -jA * std::cos(theta);

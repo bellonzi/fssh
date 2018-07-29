@@ -2,13 +2,17 @@
 
 void traj::initial(const params &config) {
 
-  // FIXME sigp is already 0 so I commented this out. We're passing params as
-  // const reference everywhere, so sigp can never be altered. Is this okay?
+  // FIXME Nicole, I noticed that sigp is already 0, so I commented out the
+  // lines below where sigp is set to zero again. Because we're passing params
+  // as const reference everywhere, sigp can never be altered. Does this seem
+  // sufficient to you?
+
   // std::cout << "Sigma_p is set to zero\n\n" << std::endl;
   // config.sigp.zeros(config.cdim);
 
   x.zeros(config.cdim);
   p.zeros(config.cdim);
+  F.zeros(config.cdim);
   psi.zeros(config.qdim);
 
   arma::vec randvec(config.cdim + config.cdim % 2);
@@ -34,6 +38,6 @@ void traj::initial(const params &config) {
   else
     surface = 1;
 
-  std::cout << "run" << std::endl;
+  // std::cout << "run" << std::endl;
   return;
 }
