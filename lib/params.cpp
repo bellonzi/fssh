@@ -91,30 +91,10 @@ void params::read_input(void) {
     line.erase(0, pos + delim1.length());
   }
 
-  // seed random number generator
+  // Get the seed for the random number generator
   getline(input, line); // cdim
   pos = line.find(delim1);
-  int seed = stoi(line.substr(0, pos));
-  std::srand(seed);
-
-  return;
-}
-
-/* * * * * * * * * * * * * * * * * * * * * * * */
-void params::boxmuller(arma::vec &randvec) const {
-  double epsilon = std::numeric_limits<double>::min();
-  double u1, u2;
-  int lrand = 1;
-  do {
-    do {
-      u1 = rand() * (1.0 / RAND_MAX);
-      u2 = rand() * (1.0 / RAND_MAX);
-    } while (u1 <= epsilon);
-
-    randvec[lrand - 1] = sqrt(-2.0 * log(u1)) * cos(two_pi * u2);
-    randvec[lrand] = sqrt(-2.0 * log(u1)) * sin(two_pi * u2);
-    lrand += 2;
-  } while (lrand <= randvec.n_elem);
+  seed = stoi(line.substr(0, pos));
 
   return;
 }

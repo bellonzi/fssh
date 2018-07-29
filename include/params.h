@@ -24,6 +24,8 @@ struct params {
   arma::vec sigp;
   arma::vec x0;
   arma::vec p0;
+
+  int seed;
 };
 
 #endif // NIB_LIB

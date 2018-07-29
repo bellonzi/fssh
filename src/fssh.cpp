@@ -1,7 +1,8 @@
+#include <ctime>
+
 #include "hamil.h"
 #include "params.h"
 #include "traj.h"
-#include <ctime>
 
 namespace fssh {
 
@@ -33,6 +34,8 @@ int main() {
   curr_H.set_params(config);
 
   for (int itraj = 0; itraj < config.ntrajs; itraj++) {
+    arma::arma_rng::set_seed(config.seed + itraj);
+
     traj curr_traj;
     curr_traj.initial(config);
     curr_H.HamilA(config, curr_traj);

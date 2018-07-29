@@ -11,14 +11,16 @@ void traj::initial(const params &config) {
   p.zeros(config.cdim);
   psi.zeros(config.qdim);
 
-  arma::vec randvec;
-  randvec.zeros(config.cdim + config.cdim % 2);
+  arma::vec randvec(config.cdim + config.cdim % 2);
 
   // initial x sampled from gaussian
-  config.boxmuller(randvec);
+  // The random seed is set in fssh.cpp
+  randvec.randn();
+  randvec.print();
   x = config.sigx % randvec.head(config.cdim) + config.x0;
   // initial p sampled from gaussian
-  config.boxmuller(randvec);
+  randvec.randn();
+  randvec.print();
   p = config.sigp % randvec.head(config.cdim) + config.p0;
 
   // initial psi in adiabatic basis
