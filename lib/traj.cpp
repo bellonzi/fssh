@@ -35,19 +35,3 @@ void traj::initial() {
   std::cout << "run" << std::endl;
   return;
 }
-
-/* * * * * * * * * * * * * * * * * * * * * * * */
-void traj::propagate() {
-  // x + p/m*dt/2
-  x = x + p * dt2;
-
-  // update Hamil to get Fsurf
-  sys::HamilA();
-  // p + F*dt
-  p = p + (sys::Fsurf)*dt;
-
-  // x + p/m*dt/2
-  x = x + p * dt2;
-
-  return;
-}

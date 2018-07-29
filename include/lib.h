@@ -1,3 +1,6 @@
+#ifndef NIB_LIB
+#define NIB_LIB
+
 #include <armadillo>
 #include <cmath>
 #include <cstdlib>
@@ -27,3 +30,5 @@ extern arma::vec p0;
 // lib.C functions
 void read_input(void);              // read run.in
 void boxmuller(arma::vec &randvec); // make random normal noise
+
+#endif // NIB_LIB
