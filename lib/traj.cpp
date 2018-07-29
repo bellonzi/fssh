@@ -16,11 +16,9 @@ void traj::initial(const params &config) {
   // initial x sampled from gaussian
   // The random seed is set in fssh.cpp
   randvec.randn();
-  randvec.print();
   x = config.sigx % randvec.head(config.cdim) + config.x0;
   // initial p sampled from gaussian
   randvec.randn();
-  randvec.print();
   p = config.sigp % randvec.head(config.cdim) + config.p0;
 
   // initial psi in adiabatic basis
