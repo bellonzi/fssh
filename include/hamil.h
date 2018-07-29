@@ -7,7 +7,7 @@
 #include "traj.h"
 #include <cmath>
 
-class hamil {
+struct hamil {
 
   arma::cx_mat Ve;
   arma::cx_mat Ue;
