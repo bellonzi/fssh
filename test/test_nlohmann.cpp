@@ -1,7 +1,7 @@
 #include <fstream>
 #include <iterator>
 
-#include "json.hpp"
+#include "nlohmann/json.hpp"
 #include "params.h"
 #include "gtest/gtest.h"
 

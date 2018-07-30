@@ -3,7 +3,7 @@ set(PROJECT_NAME_STR pimd)
 project(${PROJECT_NAME_STR})
 
 include(ExternalProject)
-include(thirdparty/picojson.cmake)
+include(thirdparty/nlohmann_json.cmake)
 
 # set( CMAKE_VERBOSE_MAKEFILE on )
 
@@ -70,7 +70,7 @@ foreach(_test_file ${TEST_SRC_FILES})
     get_filename_component(_test_name ${_test_file} NAME_WE)
     add_executable(${_test_name} ${_test_file})
     add_dependencies(${_test_name} "googletest.git")
-    add_dependencies(${_test_name} "kazuho-picojson-25fc213")
+    add_dependencies(${_test_name} "nlohmann-json-d2dd27d")
     target_link_libraries(${_test_name} tools gtest gtest_main ${CMAKE_THREAD_LIBS_INIT} fftw3 ${ARMADILLO_LIBRARIES})
     add_test(${_test_name} ${_test_name})
     set_tests_properties(${_test_name} PROPERTIES TIMEOUT 5)
