@@ -2,96 +2,48 @@
 #include <fstream>
 #include <iostream>
 
+#include "nlohmann/json.hpp"
+
 #include "params.h"
 
-// // set global variables
-// int ntrajs, nsteps;
-// double dt, dt2;
-// int qdim, cdim;
-// double phase;
-// arma::vec sigx, sigp;
-// arma::vec x0, p0;
-// double jA, jlx, jbx;
-
-/* * * * * * * * * * * * * * * * * * * * * * * */
 void params::read_input(const std::string &input_file) {
 
-  size_t pos;
-  std::string delim1 = "\t";
-  std::ifstream input(input_file);
-  std::string line;
+  std::ifstream file(input_file);
+  nlohmann::json j;
+  file >> j;
 
-  getline(input, line); //! calculation
-  getline(input, line); // ntrajs
-  pos = line.find(delim1);
-  ntrajs = stoi(line.substr(0, pos));
-  getline(input, line); // nsteps
-  pos = line.find(delim1);
-  nsteps = stoi(line.substr(0, pos));
-  getline(input, line); // dt
-  pos = line.find(delim1);
-  dt = stod(line.substr(0, pos));
+  ntrajs = j["ntrajs"];
+  nsteps = j["nsteps"];
+  dt = j["dt"];
   dt2 = dt / 2;
 
-  getline(input, line); //! Hamil
-  getline(input, line); // qdim
-  pos = line.find(delim1);
-  qdim = stoi(line.substr(0, pos));
+  qdim = j["Hamil"]["qdim"];
   if (qdim != 2) {
     std::cout << "Only works for qdim = 2.\n Change system." << std::endl;
     std::exit(EXIT_FAILURE);
   }
-  getline(input, line); // cdim
-  pos = line.find(delim1);
-  cdim = stoi(line.substr(0, pos));
-  getline(input, line); // jA
-  pos = line.find(delim1);
-  jA = stod(line.substr(0, pos));
-  getline(input, line); // jlx
-  pos = line.find(delim1);
-  jlx = stod(line.substr(0, pos));
-  // std::cout << jlx << std::endl;
-  getline(input, line); // jbx
-  pos = line.find(delim1);
-  jbx = stod(line.substr(0, pos));
-  // std::cout << jbx << std::endl;
+
+  cdim = j["Hamil"]["cdim"];
+  jA = j["Hamil"]["jA"];
+  jlx = j["Hamil"]["jlx"];
+  jbx = j["Hamil"]["jbx"];
 
   sigx.zeros(cdim);
   sigp.zeros(cdim);
   x0.zeros(cdim);
   p0.zeros(cdim);
 
-  getline(input, line); //! initial
-  getline(input, line); // phase = 2pi/x
-  pos = line.find(delim1);
-  phase = two_pi / stod(line.substr(0, pos));
-  getline(input, line); // sigx
-  for (int ic = 0; ic < cdim; ic++) {
-    pos = line.find(delim1);
-    sigx(ic) = stod(line.substr(0, pos));
-    line.erase(0, pos + delim1.length());
-  }
-  if (line != "!sigx") {
-    std::cout << "Sig_x is not the right size.\n cdim = " << cdim << std::endl;
-    std::exit(EXIT_FAILURE);
-  }
-  getline(input, line); // x0
-  for (int ic = 0; ic < cdim; ic++) {
-    pos = line.find(delim1);
-    x0(ic) = stod(line.substr(0, pos));
-    line.erase(0, pos + delim1.length());
-  }
-  getline(input, line); // p0
-  for (int ic = 0; ic < cdim; ic++) {
-    pos = line.find(delim1);
-    p0(ic) = stod(line.substr(0, pos));
-    line.erase(0, pos + delim1.length());
+  double phase_fac(j["init"]["phase_fac"]);
+  phase = 0.0;
+  if (phase_fac != 0.0) {
+    phase = two_pi / phase_fac;
   }
 
-  // Get the seed for the random number generator
-  getline(input, line); // cdim
-  pos = line.find(delim1);
-  seed = stoi(line.substr(0, pos));
+  for (int ic = 0; ic < cdim; ic++) {
+    sigx(ic) = j["init"]["sigx"][ic];
+    x0(ic) = j["init"]["x0"][ic];
+    p0(ic) = j["init"]["p0"][ic];
+  }
 
-  return;
+  seed = j["seed"];
 }
