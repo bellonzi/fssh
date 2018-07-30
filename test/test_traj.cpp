@@ -4,7 +4,7 @@
 
 TEST(traj, initial) {
   params config;
-  config.read_input("../test/reference_config.txt");
+  config.read_input("../test/reference_config.json");
 
   std::mt19937 prng;
   prng.seed(config.seed);

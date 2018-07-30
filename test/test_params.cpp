@@ -4,7 +4,7 @@
 TEST(params, read_input) {
 
   params config;
-  config.read_input("../test/reference_config.txt");
+  config.read_input("../test/reference_config.json");
 
   EXPECT_EQ(config.ntrajs, 10);
   EXPECT_EQ(config.nsteps, 2);

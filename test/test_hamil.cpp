@@ -4,7 +4,7 @@
 
 TEST(hamil, set_params) {
   params config;
-  config.read_input("../test/reference_config.txt");
+  config.read_input("../test/reference_config.json");
 
   hamil curr_H;
   curr_H.set_params(config);
@@ -20,7 +20,7 @@ TEST(hamil, set_params) {
 
 // TEST(hamil, HamilD) {
 //   params config;
-//   config.read_input("../test/reference_config.txt");
+//   config.read_input("../test/reference_config.json");
 //
 //   hamil curr_H;
 //   curr_H.set_params(config);
@@ -48,7 +48,7 @@ TEST(hamil, set_params) {
 
 TEST(hamil, HamilA) {
   params config;
-  config.read_input("../test/reference_config.txt");
+  config.read_input("../test/reference_config.json");
 
   hamil curr_H;
   curr_H.set_params(config);
