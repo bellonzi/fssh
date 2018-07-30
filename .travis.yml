@@ -1,0 +1,10 @@
+sudo: required
+
+language: cpp
+
+services:
+  - docker
+
+script:
+  - docker build -t bellonzi/fssh .
+  - docker run -i -t bellonzi/fssh ctest -VV
