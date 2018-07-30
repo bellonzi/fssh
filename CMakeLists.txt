@@ -12,6 +12,25 @@ if(CMAKE_COMPILER_IS_GNUCXX)
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -O3 --std=c++11")
 endif()
 
+
+#-------------------
+# Download and build the googletest external dependency
+#-------------------
+
+set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake ${CMAKE_MODULE_PATH})
+get_filename_component(DEPS_ROOT "${PROJECT_BINARY_DIR}/deps" ABSOLUTE)
+
+include(ExtProjectUtils)
+
+find_package(Threads REQUIRED)
+
+# Will download external CMakeable project from git repo, branch "master" and install it in $DEPS_ROOT
+# This also will create "googletest.git" target, which we'll use as dependency for our test project
+ExtProjectGit("https://github.com/google/googletest.git" "master" ${DEPS_ROOT} CMAKE_ARGS "${_OPT_CMAKE_ARGS}")
+
+include_directories("${DEPS_ROOT}/include")
+link_directories("${DEPS_ROOT}/lib")
+
 #-------------------
 # set common include folder for module
 #-------------------
@@ -38,24 +57,6 @@ foreach(_main_file ${MAIN_SRC_FILES})
     add_executable(${_main_name} ${_main_file})
     target_link_libraries(${_main_name} tools fftw3 ${ARMADILLO_LIBRARIES})
 endforeach()
-
-#-------------------
-# Download and build the googletest external dependency
-#-------------------
-
-set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake ${CMAKE_MODULE_PATH})
-get_filename_component(DEPS_ROOT "${PROJECT_BINARY_DIR}/deps" ABSOLUTE)
-
-include(ExtProjectUtils)
-
-find_package(Threads REQUIRED)
-
-# Will download external CMakeable project from git repo, branch "master" and install it in $DEPS_ROOT
-# This also will create "googletest.git" target, which we'll use as dependency for our test project
-ExtProjectGit("https://github.com/google/googletest.git" "master" ${DEPS_ROOT} CMAKE_ARGS "${_OPT_CMAKE_ARGS}")
-
-include_directories("${DEPS_ROOT}/include")
-link_directories("${DEPS_ROOT}/lib")
 
 #-------------------
 # Test
