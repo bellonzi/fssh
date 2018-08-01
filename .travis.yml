@@ -6,5 +6,5 @@ services:
   - docker
 
 script:
-  - docker build -t bellonzi/fssh .
-  - docker run -i -t bellonzi/fssh ctest -VV
+  - docker build -t gmedders/fssh .
+  - docker run -i -t gmedders/fssh ctest -VV
