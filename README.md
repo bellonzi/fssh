@@ -15,6 +15,13 @@ To override your default C and C++ compilers, you can use the following instead 
 ```
 cmake -DCMAKE_C_COMPILER=/usr/local/bin/gcc-8 -DCMAKE_CXX_COMPILER=/usr/local/bin/g++-8 ..
 ```
+# Alternative build: 
+
+Warning: This script deletes local "my_build" directory and overrides default C/C++ compilers.
+
+ - git clone https://github.com/bellonzi/fssh.git
+ - cd fssh
+ - ./newbuild_verbose.sh
 
 # Dependencies
 
