@@ -42,7 +42,7 @@ include_directories(${TCLAP_INCLUDES})
 file(GLOB tools_sources ./lib/*.cpp)
 set( tools ${tools_sources})
 add_library( tools ${tools})
-set_source_files_properties(${tools} PROPERTIES GENERATED TRUE)
+add_dependencies(tools "nlohmann-json-d2dd27d")
 
 find_package(Armadillo REQUIRED)
 
