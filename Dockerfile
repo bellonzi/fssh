@@ -7,7 +7,7 @@ WORKDIR /app
 ADD . /app
 
 # Build the packaged
-RUN mkdir build && cd build && cmake .. && make
+RUN mkdir build && cd build && cmake .. && make && rm -rf nlohmann*
 
 # When the image is run, go directly to the executables
 WORKDIR /app/build
