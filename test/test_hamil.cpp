@@ -14,10 +14,6 @@ TEST(hamil, set_params) {
   EXPECT_DOUBLE_EQ(config.jbx, curr_H.jbx);
 }
 
-// FIXME
-// Uncomment these expects, then run the tests. Each expect will fail and
-// tell you what the value should have been. Then copy that number below
-
 TEST(hamil, HamilD) {
   params config;
   config.read_input("../test/reference_config.json");
@@ -60,11 +56,6 @@ TEST(hamil, HamilA) {
 
   traj curr_traj;
   curr_traj.initial(config, prng);
-
-  // Set curr_traj.F != 0 so that we can make sure that HamilA is zeroing F
-  for (int i = 0; i < config.cdim; ++i) {
-    curr_H.F(i) = 1.0;
-  }
 
   curr_H.HamilA(config, curr_traj);
 
