@@ -18,9 +18,6 @@ TEST(traj, initial) {
   EXPECT_NEAR(curr_traj.p(0), 0.0, 1.0E-8);
   EXPECT_NEAR(curr_traj.p(1), 30.0, 1.0E-8);
 
-  EXPECT_NEAR(curr_traj.F(0), 0.0, 1.0E-8);
-  EXPECT_NEAR(curr_traj.F(1), 0.0, 1.0E-8);
-
   EXPECT_NEAR(curr_traj.psi(0).real(), 0.70710678118654746, 1.0E-8);
   EXPECT_NEAR(curr_traj.psi(0).imag(), 0.0, 1.0E-8);
   EXPECT_NEAR(curr_traj.psi(1).real(), 0.0, 1.0E-8);

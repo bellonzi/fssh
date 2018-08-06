@@ -63,7 +63,7 @@ TEST(hamil, HamilA) {
 
   // Set curr_traj.F != 0 so that we can make sure that HamilA is zeroing F
   for (int i = 0; i < config.cdim; ++i) {
-    curr_traj.F(i) = 1.0;
+    curr_H.F(i) = 1.0;
   }
 
   curr_H.HamilA(config, curr_traj);
@@ -79,6 +79,6 @@ TEST(hamil, HamilA) {
   EXPECT_NEAR(abs(curr_H.Ue(1, 1)), 0.17069914718673779, 1.0E-8);
 
   for (int i = 0; i < config.cdim; ++i) {
-    EXPECT_DOUBLE_EQ(curr_traj.F(i), 0.0);
+    EXPECT_DOUBLE_EQ(curr_H.F(i), 0.0);
   }
 }
