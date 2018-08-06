@@ -12,7 +12,6 @@ void traj::initial(const params &config, std::mt19937 &prng) {
 
   x.zeros(config.cdim);
   p.zeros(config.cdim);
-  F.zeros(config.cdim);
   psi.zeros(config.qdim);
 
   arma::vec randvec(config.cdim + config.cdim % 2);

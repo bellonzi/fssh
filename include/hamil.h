@@ -12,7 +12,7 @@ struct hamil {
   arma::cx_mat Ve;
   arma::cx_mat Ue;
   arma::cx_cube Fe;
-  arma::vec Fsurf;
+  arma::vec F;
   arma::vec eigs;
 
   void HamilD(const params &, traj &curr_traj);

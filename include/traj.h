@@ -10,7 +10,6 @@ struct traj {
 
   arma::vec x;
   arma::vec p;
-  arma::vec F;
   arma::cx_vec psi;
   int surface;
 };

@@ -59,8 +59,7 @@ void hamil::HamilA(const params &config, traj &curr_traj) {
   Ue(0, 1) = (eigs(1) - Ve(1, 1)) / wave_norm;
   Ue(1, 1) = Ve(1, 0) / wave_norm;
 
-  curr_traj.F.zeros(config.cdim);
-
+  F.zeros(config.cdim);
   return;
 }
 

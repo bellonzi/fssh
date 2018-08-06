@@ -10,10 +10,10 @@ void propagate(const params &config, traj &curr_traj, hamil &curr_H) {
   // x + p/m*dt/2
   curr_traj.x = curr_traj.x + curr_traj.p * config.dt2;
 
-  // update Hamil to get Fsurf
+  // update Hamil to get F
   curr_H.HamilA(config, curr_traj);
   // p + F*dt
-  curr_traj.p = curr_traj.p + curr_traj.F * config.dt;
+  curr_traj.p = curr_traj.p + curr_H.F * config.dt;
 
   // x + p/m*dt/2
   curr_traj.x = curr_traj.x + curr_traj.p * config.dt2;
