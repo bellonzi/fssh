@@ -23,4 +23,6 @@ struct rk4 {
     rk4 (const params &);
 };
 
+traj add_rk4(traj &, rk4 &);
+
 #endif // TRAJ_H

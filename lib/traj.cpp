@@ -54,4 +54,13 @@ rk4::rk4(const params &config) {
 
 }
 
+traj add_rk4(traj &curr_traj, rk4 &curr_rk4){
 
+  traj temp_traj = curr_traj;
+
+  temp_traj.x += curr_rk4.x;
+  temp_traj.p += curr_rk4.p;
+  temp_traj.psi += curr_rk4.psi;
+
+  return temp_traj;
+}
