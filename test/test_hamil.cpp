@@ -18,7 +18,7 @@ TEST(hamil, set_params) {
           config.qdim = 3;
           curr_H.set_params(config);
         } catch (std::exception &err) {
-          EXPECT_STREQ("config.qdim must be 2 for this Hamiltonian",
+          EXPECT_STREQ("qdim must be 2 for this Hamiltonian",
                        err.what());
           throw std::exception();
         }
@@ -39,7 +39,7 @@ TEST(hamil, HamilD) {
   traj curr_traj;
   curr_traj.initial(config, prng);
 
-  curr_H.HamilA(config, curr_traj);
+  curr_H.HamilA(curr_traj);
 
   EXPECT_NEAR(curr_H.Ve(0, 0).real(), 0.094172360229944088, 1.0E-8);
   EXPECT_NEAR(curr_H.Ve(1, 1).real(), -0.094172360229944088, 1.0E-8);
@@ -69,7 +69,7 @@ TEST(hamil, HamilA) {
   traj curr_traj;
   curr_traj.initial(config, prng);
 
-  curr_H.HamilA(config, curr_traj);
+  curr_H.HamilA(curr_traj);
 
   EXPECT_NEAR(curr_H.eigs(0), -0.1, 1.0E-8);
   EXPECT_NEAR(curr_H.eigs(1), 0.1, 1.0E-8);
@@ -81,7 +81,7 @@ TEST(hamil, HamilA) {
   EXPECT_NEAR(abs(curr_H.Ue(1, 0)), 0.98532319629130838, 1.0E-8);
   EXPECT_NEAR(abs(curr_H.Ue(1, 1)), 0.17069914718673779, 1.0E-8);
 
-  for (int i = 0; i < config.cdim; ++i) {
+  for (int i = 0; i < curr_H.cdim; ++i) {
     EXPECT_DOUBLE_EQ(curr_H.F(i), 0.0);
   }
 }
