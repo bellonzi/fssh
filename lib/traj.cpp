@@ -45,3 +45,13 @@ void traj::initial(const params &config, std::mt19937 &prng) {
   // std::cout << "run" << std::endl;
   return;
 }
+
+rk4::rk4(const params &config) {
+
+  x.zeros(config.cdim);
+  p.zeros(config.cdim);
+  psi.zeros(config.qdim);
+
+}
+
+

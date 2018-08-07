@@ -14,4 +14,13 @@ struct traj {
   int surface;
 };
 
+struct rk4 {
+  arma::vec x;
+  arma::vec p;
+  arma::cx_vec psi;
+
+  public:
+    rk4 (const params &);
+};
+
 #endif // TRAJ_H
