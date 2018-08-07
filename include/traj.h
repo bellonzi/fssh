@@ -6,6 +6,7 @@
 #include <random>
 
 struct traj {
+  void initial_zero(const params &);
   void initial(const params &, std::mt19937 &prng);
 
   arma::vec x;

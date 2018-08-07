@@ -26,6 +26,27 @@ TEST(traj, initial) {
   EXPECT_EQ(curr_traj.surface, 0);
 }
 
+TEST(traj, initial_zero) {
+  params config;
+  config.read_input("../test/reference_config.json");
+
+  traj curr_traj;
+  curr_traj.initial_zero(config);
+
+  EXPECT_NEAR(curr_traj.x(0), 0.0, 1.0E-8);
+  EXPECT_NEAR(curr_traj.x(1), 0.0, 1.0E-8);
+
+  EXPECT_NEAR(curr_traj.p(0), 0.0, 1.0E-8);
+  EXPECT_NEAR(curr_traj.p(1), 0.0, 1.0E-8);
+
+  EXPECT_NEAR(curr_traj.psi(0).real(), 0.0, 1.0E-8);
+  EXPECT_NEAR(curr_traj.psi(0).imag(), 0.0, 1.0E-8);
+  EXPECT_NEAR(curr_traj.psi(1).real(), 0.0, 1.0E-8);
+  EXPECT_NEAR(curr_traj.psi(1).imag(), 0.0, 1.0E-8);
+
+  EXPECT_EQ(curr_traj.surface, 0);
+}
+
 TEST(traj, add_rk4) {
   params config;
   config.read_input("../test/reference_config.json");
