@@ -12,6 +12,21 @@ TEST(hamil, set_params) {
   EXPECT_DOUBLE_EQ(config.jA, curr_H.jA);
   EXPECT_DOUBLE_EQ(config.jlx, curr_H.jlx);
   EXPECT_DOUBLE_EQ(config.jbx, curr_H.jbx);
+  EXPECT_THROW({
+      try
+      {
+          config.qdim = 3;
+          curr_H.set_params(config);
+  } catch (std::exception &err) {
+          EXPECT_STREQ( "config.qdim must be 2 for this Hamiltonian", err.what() );
+    throw std::exception(); 
+  }
+      //{V
+      //    // and this tests that it has the correct message
+      //    EXPECT_STREQ( "Cucumber overflow", e.what() );
+      //    throw;
+      //}
+  }, std::exception );
 }
 
 // FIXME

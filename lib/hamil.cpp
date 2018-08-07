@@ -68,4 +68,10 @@ void hamil::set_params(const params &config) {
   jA = config.jA;
   jlx = config.jlx;
   jbx = config.jbx;
+
+  if(config.qdim!=2) {
+    throw std::invalid_argument("config.qdim must be 2 for this Hamiltonian");
+  }
+
+  return;
 }
