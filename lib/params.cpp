@@ -18,11 +18,6 @@ void params::read_input(const std::string &input_file) {
   dt2 = dt / 2;
 
   qdim = j["Hamil"]["qdim"];
-  if (qdim != 2) {
-    std::cout << "Only works for qdim = 2.\n Change system." << std::endl;
-    std::exit(EXIT_FAILURE);
-  }
-
   cdim = j["Hamil"]["cdim"];
   jA = j["Hamil"]["jA"];
   jlx = j["Hamil"]["jlx"];
