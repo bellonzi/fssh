@@ -31,7 +31,12 @@ int main() {
   params config;
   config.read_input("run.json");
   hamil curr_H;
-  curr_H.set_params(config);
+  try {
+    curr_H.set_params(config);
+  } catch (std::exception &err) {
+    std::cerr << err.what() << std::endl;
+    std::exit(EXIT_FAILURE);
+  }
 
   std::mt19937 prng;
   prng.seed(config.seed);
