@@ -61,6 +61,18 @@ void hamil::HamilA(const params &config, traj &curr_traj) {
 
   F.zeros(config.cdim);
 
+  dij.zeros(config.qdim, config.qdim, config.cdim);
+  for (int i = 0; i < config.cdim; ++i) {
+    dij.slice(i) = Ue.t() * Fe.slice(i) * Ue;
+    for (int j = 0; j < config.qdim; ++j) {
+      dij(j, j, i) = 0;
+      for (int k = j + 1; k < config.qdim; ++k) {
+        dij(j, k, i) = dij(j, k, i) / (eigs(k) - eigs(j));
+        dij(k, j, i) = - conj( dij(j, k, i) );
+      }
+    }
+  }
+
   return;
 }
 

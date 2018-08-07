@@ -14,6 +14,7 @@ struct hamil {
   arma::cx_cube Fe;
   arma::vec F;
   arma::vec eigs;
+  arma::cx_cube dij;
 
   void HamilD(const params &, traj &curr_traj);
   void HamilA(const params &, traj &curr_traj);
