@@ -1,5 +1,15 @@
 #include "traj.h"
 
+void traj::initial_zero(const params &config) {
+
+  x.zeros(config.cdim);
+  p.zeros(config.cdim);
+  psi.zeros(config.qdim);
+  surface = 0;
+
+  return;
+}
+
 void traj::initial(const params &config, std::mt19937 &prng) {
 
   // FIXME Nicole, I noticed that sigp is already 0, so I commented out the
@@ -9,7 +19,6 @@ void traj::initial(const params &config, std::mt19937 &prng) {
 
   // std::cout << "Sigma_p is set to zero\n\n" << std::endl;
   // config.sigp.zeros(config.cdim);
-
   x.zeros(config.cdim);
   p.zeros(config.cdim);
   psi.zeros(config.qdim);
@@ -54,4 +63,13 @@ rk4::rk4(const params &config) {
 
 }
 
+traj add_rk4(traj &curr_traj, rk4 &curr_rk4){
 
+  traj temp_traj = curr_traj;
+
+  temp_traj.x += curr_rk4.x;
+  temp_traj.p += curr_rk4.p;
+  temp_traj.psi += curr_rk4.psi;
+
+  return temp_traj;
+}

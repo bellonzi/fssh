@@ -6,6 +6,7 @@
 #include <random>
 
 struct traj {
+  void initial_zero(const params &);
   void initial(const params &, std::mt19937 &prng);
 
   arma::vec x;
@@ -22,5 +23,7 @@ struct rk4 {
   public:
     rk4 (const params &);
 };
+
+traj add_rk4(traj &, rk4 &);
 
 #endif // TRAJ_H

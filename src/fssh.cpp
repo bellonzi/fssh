@@ -7,16 +7,44 @@
 namespace fssh {
 
 void propagate(const params &config, traj &curr_traj, hamil &curr_H) {
-  // x + p/m*dt/2
-  curr_traj.x = curr_traj.x + curr_traj.p * config.dt2;
+  // t_{n+1}= t_{n} + dt
+  rk4 k1(config), k2(config), k3(config), k4(config);
+  traj temp_traj;
+  temp_traj.initial_zero(config);
 
-  // update Hamil to get F
+  // k_{1}=0.5 dt f(t_{n}, y_{n})
   curr_H.HamilA(config, curr_traj);
-  // p + F*dt
-  curr_traj.p = curr_traj.p + curr_H.F * config.dt;
+  k1.x =   config.dt2 * curr_traj.p;
+  k1.p =   config.dt2 * curr_H.F;
+  //k1.psi = config.dt2 * dcdt;
 
-  // x + p/m*dt/2
-  curr_traj.x = curr_traj.x + curr_traj.p * config.dt2;
+  // k_{2}=0.5 dt f(t_{n} + dt/2, y_{n} + k_{1})
+  temp_traj = add_rk4(curr_traj, k1);
+  curr_H.HamilA(config, temp_traj);
+  k2.x = config.dt2 * temp_traj.p;
+  k2.p = config.dt2 * curr_H.F;
+
+  // k_{3}=dt f(t_{n} + dt/2, y_{n} + k_{2})
+  temp_traj = add_rk4(curr_traj, k2);
+  curr_H.HamilA(config, temp_traj);
+  k3.x = config.dt * temp_traj.p;
+  k3.p = config.dt * curr_H.F;
+
+  // k_{4}=dt f(t_{n} + dt, y_{n} + k_{3})
+  temp_traj = add_rk4(curr_traj, k3);
+  curr_H.HamilA(config, temp_traj);
+  k4.x = config.dt * temp_traj.p;
+  k4.p = config.dt * curr_H.F;
+
+  // y_{n+1}= y_{n} + 1/6 (2 k_{1} + 4 k_{2} + 2 k_{3} + k_{4})
+  curr_traj.x = curr_traj.x + (2 * k1.x + 4 * k2.x + 2 * k3.x + k4.x) / 6;
+  curr_traj.p = curr_traj.p + (2 * k1.p + 4 * k2.p + 2 * k3.p + k4.p) / 6;
+  curr_traj.psi =
+      curr_traj.psi + (2 * k1.psi + 4 * k2.psi + 2 * k3.psi + k4.psi) / 6;
+
+  curr_H.HamilA(config, curr_traj);
+
+  // call hop_or_not
 
   return;
 }
