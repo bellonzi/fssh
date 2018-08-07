@@ -11,11 +11,24 @@ void propagate(const params &config, traj &curr_traj, hamil &curr_H) {
   rk4 k1(config), k2(config), k3(config), k4(config);
   traj temp_traj;
   temp_traj.initial_zero(config);
+  arma::cx_vec dcdt(config.qdim); 
 
   // k_{1}=0.5 dt f(t_{n}, y_{n})
   curr_H.HamilA(config, curr_traj);
   k1.x =   config.dt2 * curr_traj.p;
   k1.p =   config.dt2 * curr_H.F;
+
+  dcdt.zeros();
+  for(int i = 0; i<config.qdim; i++){
+     dcdt(i) -= arma::cx_double(0,1)*curr_traj.psi(i)*curr_H.eigs(i);
+     for(int j = 0; j<config.qdim; j++){
+        if(j!=i){
+          arma::cx_vec temp_dij = curr_H.dij(arma::span(i),arma::span(j),arma::span::all);
+          dcdt(i) -= curr_traj.psi(j)*dot(curr_traj.p,temp_dij);
+     }
+     }
+  }
+
   //k1.psi = config.dt2 * dcdt;
 
   // k_{2}=0.5 dt f(t_{n} + dt/2, y_{n} + k_{1})
