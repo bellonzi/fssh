@@ -102,9 +102,6 @@ TEST(hamil, checkE) {
 
   curr_H.HamilA(curr_traj);
 
-  std::cout << curr_traj.surface << std::endl;
-  std::cout << size(curr_H.eigs) << std::endl;
-
   EXPECT_NEAR(curr_H.checkE(curr_traj),449.89999999999998,1.0E-8);
 
 }
