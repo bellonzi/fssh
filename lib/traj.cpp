@@ -12,13 +12,6 @@ void traj::initial_zero(const params &config) {
 
 void traj::initial(const params &config, std::mt19937 &prng) {
 
-  // FIXME Nicole, I noticed that sigp is already 0, so I commented out the
-  // lines below where sigp is set to zero again. Because we're passing params
-  // as const reference everywhere, sigp can never be altered. Does this seem
-  // sufficient to you?
-
-  // std::cout << "Sigma_p is set to zero\n\n" << std::endl;
-  // config.sigp.zeros(config.cdim);
   x.zeros(config.cdim);
   p.zeros(config.cdim);
   psi.zeros(config.qdim);
@@ -26,7 +19,7 @@ void traj::initial(const params &config, std::mt19937 &prng) {
   arma::vec randvec(config.cdim + config.cdim % 2);
 
   // initial x sampled from gaussian
-  // The random seed is set in fssh.cpp
+  // The random seed is set in main.cpp
   std::normal_distribution<> rand_gaussian{0, 1};
   for (int i = 0; i < config.cdim; ++i) {
     randvec(i) = rand_gaussian(prng);
@@ -51,8 +44,16 @@ void traj::initial(const params &config, std::mt19937 &prng) {
   else
     surface = 1;
 
-  // std::cout << "run" << std::endl;
+  arma::cx_double normie = checknorm();
+  std::cout << normie << std::endl;
+
   return;
+}
+
+arma::cx_double traj::checknorm(){
+
+  arma::cx_double norm = arma::cdot(psi,psi);
+  return norm;
 }
 
 rk4::rk4(const params &config) {
@@ -74,8 +75,3 @@ traj add_rk4(traj &curr_traj, rk4 &curr_rk4){
   return temp_traj;
 }
 
-arma::cx_double traj::checknorm(){
-
-  arma::cx_double norm = arma::cdot(psi,psi);
-  return norm;
-}
