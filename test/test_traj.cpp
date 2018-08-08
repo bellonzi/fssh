@@ -29,6 +29,26 @@ TEST(traj, initial) {
   EXPECT_NEAR((curr_traj.checknorm()).imag(),0.0,1.0E-8);
 }
 
+TEST(traj, initial_normsum) {
+  params config;
+  config.read_input("../test/reference_config.json");
+
+  std::mt19937 prng;
+  prng.seed(config.seed);
+
+  traj curr_traj;
+  arma::cx_double normsum = 0;
+  int ntraj = 100; 
+
+  for(int i=0; i<ntraj; i++){
+     curr_traj.initial(config, prng);
+     normsum += curr_traj.checknorm();
+  }
+
+  EXPECT_NEAR((normsum).real(),1.0*ntraj,1.0E-8);
+  EXPECT_NEAR((normsum).imag(),0.0,1.0E-8);
+}
+
 TEST(traj, initial_zero) {
   params config;
   config.read_input("../test/reference_config.json");
