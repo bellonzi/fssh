@@ -44,9 +44,6 @@ void traj::initial(const params &config, std::mt19937 &prng) {
   else
     surface = 1;
 
-  arma::cx_double normie = checknorm();
-  std::cout << normie << std::endl;
-
   return;
 }
 
