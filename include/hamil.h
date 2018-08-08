@@ -23,6 +23,7 @@ struct hamil {
   void HamilD(traj &curr_traj);
   void HamilA(traj &curr_traj);
   void set_params(const params &);
+  double checkE(traj &);
 
   double jA, jlx, jbx; // Defines Hamil in Joe's code
 };

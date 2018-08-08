@@ -85,3 +85,12 @@ void hamil::set_params(const params &config) {
   }
   return;
 }
+
+double hamil::checkE(traj &curr_traj){
+
+  double KE = arma::dot(curr_traj.p,curr_traj.p)/2;
+  double PE = eigs(curr_traj.surface);
+
+  double totE = KE + PE;
+  return totE;
+}

@@ -1,4 +1,5 @@
 #include "hamil.h"
+#include "traj.h"
 #include "params.h"
 #include "gtest/gtest.h"
 
@@ -84,5 +85,27 @@ TEST(hamil, HamilA) {
   for (int i = 0; i < curr_H.cdim; ++i) {
     EXPECT_DOUBLE_EQ(curr_H.F(i), 0.0);
   }
+}
+
+TEST(hamil, checkE) {
+  params config;
+  config.read_input("../test/reference_config.json");
+
+  std::mt19937 prng;
+  prng.seed(config.seed);
+
+  traj curr_traj;
+  curr_traj.initial(config, prng);
+
+  hamil curr_H;
+  curr_H.set_params(config);
+
+  curr_H.HamilA(curr_traj);
+
+  std::cout << curr_traj.surface << std::endl;
+  std::cout << size(curr_H.eigs) << std::endl;
+
+  EXPECT_NEAR(curr_H.checkE(curr_traj),449.89999999999998,1.0E-8);
+
 }
 
