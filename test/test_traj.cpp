@@ -24,6 +24,9 @@ TEST(traj, initial) {
   EXPECT_NEAR(curr_traj.psi(1).imag(), 0.70710678118654757, 1.0E-8);
 
   EXPECT_EQ(curr_traj.surface, 0);
+
+  EXPECT_NEAR((curr_traj.checknorm()).real(),1.0,1.0E-8);
+  EXPECT_NEAR((curr_traj.checknorm()).imag(),0.0,1.0E-8);
 }
 
 TEST(traj, initial_zero) {

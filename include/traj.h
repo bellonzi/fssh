@@ -8,6 +8,7 @@
 struct traj {
   void initial_zero(const params &);
   void initial(const params &, std::mt19937 &prng);
+  arma::cx_double checknorm();
 
   arma::vec x;
   arma::vec p;

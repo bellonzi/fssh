@@ -73,3 +73,9 @@ traj add_rk4(traj &curr_traj, rk4 &curr_rk4){
 
   return temp_traj;
 }
+
+arma::cx_double traj::checknorm(){
+
+  arma::cx_double norm = arma::cdot(psi,psi);
+  return norm;
+}
